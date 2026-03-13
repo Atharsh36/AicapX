@@ -1,0 +1,113 @@
+.pageContainer {
+  padding-top: 120px;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.header {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.summaryCard {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.summaryIcon {
+  width: 50px;
+  height: 50px;
+  background: rgba(44, 194, 149, 0.1);
+  color: var(--color-secondary);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.summaryData p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summaryData h3 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.portfolioSection h2 {
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+}
+
+.portfolioTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.portfolioTable th {
+  padding: 16px 24px;
+  background: rgba(10, 11, 16, 0.8);
+  color: var(--color-muted);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.portfolioTable td {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+.portfolioTable tr:last-child td {
+  border-bottom: none;
+}
+
+.portfolioTable tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.projectName {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.claimBtn {
+  padding: 6px 16px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .portfolioTable th, .portfolioTable td {
+    padding: 12px;
+  }
+}

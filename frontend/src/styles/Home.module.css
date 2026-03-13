@@ -1,0 +1,233 @@
+.homeContainer {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.orb1 {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(161, 98, 247, 0.4), transparent 70%);
+  filter: blur(80px);
+  animation: floatOrb 8s infinite alternate ease-in-out;
+}
+
+.orb2 {
+  position: absolute;
+  bottom: 10%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(44, 194, 149, 0.3), transparent 70%);
+  filter: blur(80px);
+  animation: floatOrb 12s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(30px, 50px); }
+}
+
+.gridOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse at center, black 10%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 80%);
+}
+
+.hero {
+  padding-top: 180px;
+  padding-bottom: 100px;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(44, 194, 149, 0.1);
+  border: 1px solid rgba(44, 194, 149, 0.2);
+  border-radius: 100px;
+  color: var(--color-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.badgeDot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-secondary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-secondary);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.5; }
+}
+
+.title {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 40px rgba(161, 98, 247, 0.3);
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--color-muted);
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+  line-height: 1.6;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.statsRow {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-glass);
+}
+
+.statBox h4 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.statBox p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.featuresSection {
+  padding: 100px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 60px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sectionHeader h2 {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.sectionHeader p {
+  color: var(--color-muted);
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.featureCard {
+  padding: 32px;
+  transition: all var(--transition-fast);
+}
+
+.featureCard:hover {
+  background: rgba(23, 26, 36, 0.6);
+  border-color: rgba(161, 98, 247, 0.3);
+  box-shadow: 0 10px 40px rgba(161, 98, 247, 0.15);
+}
+
+.iconWrapper {
+  width: 64px;
+  height: 64px;
+  background: rgba(161, 98, 247, 0.1);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  color: var(--color-primary);
+  box-shadow: inset 0 0 20px rgba(161, 98, 247, 0.1);
+}
+
+.featureCard h3 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.featureCard p {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 140px;
+  }
+  
+  .statsRow {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+}

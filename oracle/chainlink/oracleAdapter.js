@@ -1,0 +1,2 @@
+// Oracle adapter
+module.exports = {};

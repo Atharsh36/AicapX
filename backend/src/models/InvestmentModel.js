@@ -1,0 +1,2 @@
+// Investment model
+module.exports = {};

@@ -1,0 +1,283 @@
+.pageContainer {
+  padding-top: 120px;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.header {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  text-shadow: 0 0 40px rgba(161, 98, 247, 0.3);
+}
+
+.header p {
+  color: var(--color-muted);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  background: rgba(23, 26, 36, 0.6);
+  border: 1px solid var(--border-glass);
+  padding: 8px 16px;
+  border-radius: 100px;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filterBtn.active {
+  background: rgba(161, 98, 247, 0.2);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.projectCard {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  transition: all var(--transition-fast);
+}
+
+.projectCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(161, 98, 247, 0.4);
+  box-shadow: 0 10px 30px rgba(161, 98, 247, 0.15);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.statusBadge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(44, 194, 149, 0.15);
+  color: var(--color-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.projectTitle {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.projectDesc {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+
+.statsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statItem p {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.statItem h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.progressContainer {
+  margin-bottom: 24px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+
+.progressBarBg {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: 4px;
+}
+
+.investBtn {
+  width: 100%;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 11, 16, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 500px;
+  background: rgba(23, 26, 36, 0.95);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: transparent;
+  border: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.closeModalBtn:hover {
+  color: #ef4444;
+}
+
+.modalHeader {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.modalHeader h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.modalHeader p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.investInputGroup {
+  margin-bottom: 24px;
+}
+
+.investInputGroup label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.investInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.investInput {
+  width: 100%;
+  padding: 16px;
+  padding-right: 80px;
+  background: rgba(10, 11, 16, 0.5);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  font-family: var(--font-main);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.investInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(161, 98, 247, 0.15);
+}
+
+.currencyLabel {
+  position: absolute;
+  right: 16px;
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.payoutPreview {
+  background: rgba(44, 194, 149, 0.1);
+  border: 1px solid rgba(44, 194, 149, 0.2);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.previewRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.previewRow p {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.previewRow span {
+  color: var(--color-secondary);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.actionRow {
+  display: flex;
+  gap: 16px;
+}
+
+.actionRow button {
+  flex: 1;
+}
