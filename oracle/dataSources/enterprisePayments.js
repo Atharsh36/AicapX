@@ -1,2 +1,0 @@
-// Enterprise payments
-module.exports = {};

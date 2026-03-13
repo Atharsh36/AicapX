@@ -2,8 +2,8 @@ import hre from "hardhat";
 const { ethers } = hre;
 
 /**
- * Deploy SolarRegistration (Fractional NFT) to BSC Testnet
- * Run: npx hardhat run scripts/deploySolarRegistration.js --network bscTestnet
+ * Deploy AiRegistration (Fractional NFT) to BSC Testnet
+ * Run: npx hardhat run scripts/deployAiRegistration.js --network bscTestnet
  */
 async function main() {
   const signers = await ethers.getSigners();
@@ -16,12 +16,15 @@ async function main() {
   console.log("Deploying SolarRegistration with account:", deployer.address);
   console.log("Balance:", ethers.formatEther(await deployer.provider.getBalance(deployer.address)), "BNB\n");
 
-  const Factory = await ethers.getContractFactory("SolarRegistration");
-  const contract = await Factory.deploy();
-  await contract.waitForDeployment();
+  const AiRegistration = await ethers.getContractFactory("AiRegistration");
+  const aiRegistration = await AiRegistration.deploy();
+  await aiRegistration.waitForDeployment();
 
-  const addr = await contract.getAddress();
-  console.log("✅ SolarRegistration deployed to:", addr);
+  const addr = await aiRegistration.getAddress();
+  console.log("✅ AiRegistration deployed to:", addr);
+  
+  const fs = await import('fs');
+  fs.writeFileSync('address_log.txt', addr);
   console.log("🔍 Explorer:", `https://testnet.bscscan.com/address/${addr}`);
   console.log("\n⚠️  Now update CONTRACT_ADDRESS in frontend/src/pages/admin.jsx to:", addr);
 }

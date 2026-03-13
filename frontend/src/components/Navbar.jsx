@@ -27,8 +27,8 @@ export default function Navbar() {
         <nav className={`${styles.navLinks} ${mobileMenuOpen ? styles.mobileOpen : ''}`}>
           <Link href="/market" className={styles.navLink}>Marketplace</Link>
           <Link href="/startups" className={styles.navLink}>For Startups</Link>
-          <Link href="/investors" className={styles.navLink}>For Investors</Link>
-          <Link href="/admin" className={styles.navLink}>Admin <span style={{fontSize: '0.6rem', background: '#ef4444', color: 'white', padding: '2px 4px', borderRadius: '4px', verticalAlign: 'top', marginLeft: '4px'}}>NEW</span></Link>
+          <Link href="/portfolio" className={styles.navLink}>Portfolio</Link>
+          <Link href="/admin" className={styles.navLink}>Admin</Link>
           <div className={styles.walletBtn}>
             <ConnectButton />
           </div>

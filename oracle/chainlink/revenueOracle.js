@@ -1,2 +1,0 @@
-// Revenue oracle
-module.exports = {};

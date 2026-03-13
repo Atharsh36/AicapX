@@ -9,13 +9,16 @@ import styles from '../styles/Market.module.css';
 
 // ─── CONTRACT CONFIG ────────────────────────────────────────────────────────
 // AIProjectFactory deployed on BSC Testnet
-const CONTRACT_ADDRESS = "0x0B306BF915C4d645ff596e518fAf3F9669b97016";
+const CONTRACT_ADDRESS = "0x52f1f9db17fd3Cc933C9eaEb5451F42B6c99033f";
 const BSC_TESTNET_CHAIN_ID = 97;
 const BSC_TESTNET_EXPLORER = "https://testnet.bscscan.com";
 
-const AIProjectFactoryABI = [
+const AutoAgentSystemABI = [
   {
-    inputs: [{ internalType: "uint256", name: "_projectId", type: "uint256" }],
+    inputs: [
+      { internalType: "uint256", name: "projectId", type: "uint256" },
+      { internalType: "uint256", name: "sharesRequested", type: "uint256" }
+    ],
     name: "invest",
     outputs: [],
     stateMutability: "payable",
@@ -25,6 +28,8 @@ const AIProjectFactoryABI = [
 // ────────────────────────────────────────────────────────────────────────────
 
 export default function Market() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   const [activeFilter, setActiveFilter] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
   const [investAmount, setInvestAmount] = useState('');
@@ -98,11 +103,15 @@ export default function Market() {
     if (!investAmount || parseFloat(investAmount) <= 0) return;
     setTxError(null);
     try {
+      // Calculate shares: for now 1 BNB = 10,000 shares for test
+      // Or use the project supply/goal ratio if available
+      const sharesRequested = Math.floor(parseFloat(investAmount) * 10000);
+
       writeContract({
         address: CONTRACT_ADDRESS,
-        abi: AIProjectFactoryABI,
+        abi: AutoAgentSystemABI,
         functionName: 'invest',
-        args: [BigInt(selectedProject.id)],
+        args: [BigInt(selectedProject.id || 1), BigInt(sharesRequested)],
         value: parseEther(investAmount.toString()),
         chainId: BSC_TESTNET_CHAIN_ID,
       });
@@ -311,7 +320,7 @@ export default function Market() {
                   </button>
                 </div>
 
-              ) : !isConnected ? (
+              ) : !mounted ? null : !isConnected ? (
                 /* ── Not Connected State ── */
                 <div style={{ textAlign: 'center', padding: '20px 0' }}>
                   <div style={{ color: 'var(--color-muted)', display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
