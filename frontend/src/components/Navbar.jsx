@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Network, Wallet, Menu, X } from 'lucide-react';
+import { Cpu, Wallet, Menu, X } from 'lucide-react';
 import styles from './Navbar.module.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
@@ -20,8 +20,8 @@ export default function Navbar() {
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.navContainer}`}>
         <Link href="/" className={styles.logo}>
-          <Network size={28} className={styles.logoIcon} />
-          <span className={styles.logoText}>Omni<span className="gradient-text">AI</span></span>
+          <img src="/logo.png" alt="AiCapX Logo" className={styles.logoImg} />
+          <span className={styles.logoText}>AiCap<span className="gradient-text">X</span></span>
         </Link>
         
         <nav className={`${styles.navLinks} ${mobileMenuOpen ? styles.mobileOpen : ''}`}>

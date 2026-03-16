@@ -145,9 +145,9 @@ export default function Market() {
   // F-NFT estimate: tokens = (BNB_value * tokenSupply) / fundingGoal (in wei)
   // Simplified display: 1 BNB = 1000 tokens at default ratio
   const bnbAmount = parseFloat(investAmount) || 0;
-  const estimatedTokens = selectedProject ? Math.floor((bnbAmount * (selectedProject.tokenSupply || 10000)) / (selectedProject.goal || 200000)) : 0;
+  const estimatedTokens = selectedProject ? Math.floor(bnbAmount * 10000) : 0;
   const ownershipPct = selectedProject ? ((estimatedTokens / (selectedProject.tokenSupply || 10000)) * 100).toFixed(4) : '0.0000';
-  const monthlyYield = (bnbAmount * 0.015).toFixed(5);
+  const monthlyYield = (bnbAmount * 0.1).toFixed(6);
 
   const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
   const cardVariants = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } } };
@@ -155,7 +155,7 @@ export default function Market() {
   return (
     <div className={`container ${styles.pageContainer}`}>
       <Head>
-        <title>Marketplace | OmniAI</title>
+        <title>Marketplace | AiCapX</title>
       </Head>
 
       <div className={styles.header}>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Wallet, TrendingUp, Activity, ShieldAlert, Cpu, Send, Loader, CheckCircle, ExternalLink, RefreshCw } from 'lucide-react';
+import { Wallet, TrendingUp, Activity, ShieldAlert, Cpu, Send, Loader, CheckCircle, ExternalLink, RefreshCw, Info, Users, PieChart } from 'lucide-react';
 import styles from '../styles/Portfolio.module.css';
-import { useAccount, useBalance, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useAccount, useBalance, useReadContract, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 // ─── CONTRACT CONFIG ──────────────────────────────────────────────────────────
@@ -37,6 +37,10 @@ export default function Portfolio() {
   // ── Owned Token Discovery ──
   const [ownedTokens, setOwnedTokens] = useState([]);
   const [isScanning, setIsScanning] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [distribution, setDistribution] = useState([]);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const publicClient = usePublicClient();
 
   // ── Transfer Flow ──
   const [isTransferOpen, setIsTransferOpen] = useState(false);
@@ -58,13 +62,59 @@ export default function Portfolio() {
     // In a real production app, we would use an Indexer (Graph/Moralis).
     // For this demo, we scan the most recent 100 tokens to find owner matches.
     for (let i = total; i > 0 && tokens.length < balance && tokens.length < 100; i--) {
-      tokens.push({ id: i, name: `AutoAgent AAS #${i}` });
+      tokens.push({ id: i, name: `AutoAgent NFT #${i}` });
     }
     setOwnedTokens(tokens);
     setIsScanning(false);
   };
 
+  const analyzeHolders = async () => {
+    if (!totalMints || totalMints === 0n) return;
+    setIsAnalyzing(true);
+    try {
+      const total = Number(totalMints);
+      const holderCounts = {};
+      const calls = [];
+      
+      // We scan all tokens up to 200 (for demo performance)
+      const scanLimit = Math.min(total, 200);
+      
+      for (let i = 1; i <= scanLimit; i++) {
+        calls.push({
+          address: AAS_ADDRESS,
+          abi: AAS_ABI,
+          functionName: 'ownerOf',
+          args: [BigInt(i)],
+        });
+      }
+
+      // Execute multicall for high performance
+      const results = await publicClient.multicall({ contracts: calls });
+      
+      results.forEach((res) => {
+        if (res.status === 'success') {
+          const owner = res.result;
+          holderCounts[owner] = (holderCounts[owner] || 0) + 1;
+        }
+      });
+
+      const dist = Object.entries(holderCounts).map(([addr, count]) => ({
+        address: addr,
+        count: count,
+        percent: ((count / total) * 100).toFixed(2),
+        isYou: addr.toLowerCase() === address?.toLowerCase()
+      })).sort((a, b) => b.count - a.count);
+
+      setDistribution(dist);
+    } catch (err) {
+      console.error("Analysis error:", err);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   useEffect(() => { scanTokens(); }, [address, nftBalance, totalMints]);
+  useEffect(() => { if (isInfoOpen) analyzeHolders(); }, [isInfoOpen, totalMints]);
 
   const handleTransfer = () => {
     if (!recipient.startsWith('0x') || recipient.length !== 42) return alert('Please enter a valid BSC address.');
@@ -92,13 +142,13 @@ export default function Portfolio() {
   return (
     <div className={`container ${styles.pageContainer}`} style={{ paddingTop: '120px' }}>
       <Head>
-        <title>Portfolio | OmniAI</title>
+        <title>Portfolio | AiCapX</title>
       </Head>
 
       <div className={styles.header} style={{ marginBottom: '48px', textAlign: 'center' }}>
         <h1 style={{ fontSize: '3rem', marginBottom: '12px' }}>My <span className="gradient-text">Portfolio</span></h1>
         <p style={{ color: 'var(--color-muted)', maxWidth: '600px', margin: '0 auto' }}>
-          View your tBNB balance and manage your Fractional AI NFTs (AAS).
+          View your tBNB balance and manage your Fractional AI NFTs (AutoAgent).
         </p>
       </div>
 
@@ -122,7 +172,7 @@ export default function Portfolio() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '1000px', margin: '0 auto' }}>
           
           {/* Dashboard Summary */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '48px' }}>
             <motion.div className="glass" style={{ padding: '32px', borderRadius: '24px' }} initial={{ opacity:0, x:-20 }} animate={{ opacity:1, x:0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
                 <div style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', padding: '12px', borderRadius: '14px' }}>
@@ -141,7 +191,7 @@ export default function Portfolio() {
                 <div style={{ background: 'rgba(161, 98, 247, 0.1)', color: 'var(--color-primary)', padding: '12px', borderRadius: '14px' }}>
                   <Cpu size={24}/>
                 </div>
-                <span style={{ color: 'var(--color-muted)', fontWeight: '500' }}>Owned AAS Tokens</span>
+                <span style={{ color: 'var(--color-muted)', fontWeight: '500' }}>NFT Owned</span>
               </div>
               <h3 style={{ fontSize: '2.4rem', fontWeight: '700' }}>
                 {nftBalance ? nftBalance.toString() : '0'} 
@@ -149,21 +199,7 @@ export default function Portfolio() {
               </h3>
             </motion.div>
 
-            <motion.div className="glass" style={{ padding: '32px', borderRadius: '24px' }} initial={{ opacity:0, y:20 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-                <div style={{ background: 'rgba(44, 194, 149, 0.1)', color: 'var(--color-secondary)', padding: '12px', borderRadius: '14px' }}>
-                  <TrendingUp size={24}/>
-                </div>
-                <span style={{ color: 'var(--color-muted)', fontWeight: '500' }}>Fractional Ownership</span>
-              </div>
-              <h3 style={{ fontSize: '2.4rem', fontWeight: '700' }}>
-                {nftBalance !== undefined ? (Number(nftBalance) * 25).toFixed(0) : '0'}
-                <span style={{ fontSize: '1.2rem', color: 'var(--color-secondary)', marginLeft: '6px' }}>%</span>
-              </h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--color-muted)', marginTop: '8px' }}>
-                (4 Fractions = 100%)
-              </p>
-            </motion.div>
+
           </div>
 
           {/* Asset List */}
@@ -208,20 +244,22 @@ export default function Portfolio() {
                     </div>
                   </div>
 
-                  <div style={{ textAlign: 'center' }}>
-                    <p style={{ color: 'var(--color-muted)', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '8px' }}>Total Payout Power</p>
-                    <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--color-secondary)' }}>
-                      {nftBalance !== undefined ? (Number(nftBalance) * 25).toFixed(0) : '0'}%
-                    </div>
-                  </div>
 
-                  <div style={{ textAlign: 'right' }}>
+
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    <button 
+                      onClick={() => setIsInfoOpen(true)}
+                      className="btn btn-outline" 
+                      style={{ padding: '12px 20px', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}
+                    >
+                      <Info size={18} /> Details
+                    </button>
                     <button 
                       onClick={() => setIsTransferOpen(true)}
                       className="btn btn-primary" 
-                      style={{ padding: '12px 32px', fontSize: '1rem', background: 'var(--color-primary)', boxShadow: '0 4px 15px rgba(161,98,247,0.3)' }}
+                      style={{ padding: '12px 24px', fontSize: '1rem', background: 'var(--color-primary)', boxShadow: '0 4px 15px rgba(161,98,247,0.3)', display: 'flex', alignItems: 'center', gap: '8px' }}
                     >
-                      <Send size={18} style={{ marginRight: '8px' }} /> Transfer Shares
+                      <Send size={18} /> Transfer Shares
                     </button>
                   </div>
                 </div>
@@ -287,7 +325,7 @@ export default function Portfolio() {
                     <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '10px' }}>Recipient Address</label>
                     <input 
                       type="text" placeholder="0x..." 
-                      className="glass" style={{ width: '100%', padding: '16px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)' }}
+                      className="glass" style={{ width: '100%', padding: '16px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                       value={recipient} onChange={e => setRecipient(e.target.value)}
                     />
                   </div>
@@ -309,6 +347,81 @@ export default function Portfolio() {
                   )}
                 </>
               )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Info Modal ── */}
+      <AnimatePresence>
+        {isInfoOpen && (
+          <div className={styles.modalOverlay} onClick={() => setIsInfoOpen(false)}>
+            <motion.div 
+              className="glass" 
+              style={{ width: '100%', maxWidth: '500px', padding: '40px', borderRadius: '32px', cursor: 'default' }}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                <div style={{ width: '64px', height: '64px', background: 'rgba(44, 194, 149, 0.1)', color: 'var(--color-secondary)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                  <PieChart size={32}/>
+                </div>
+                <h2 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>Ownership Distribution</h2>
+                <p style={{ color: 'var(--color-muted)', fontSize: '0.95rem' }}>Transparency on share allocation for <strong>AutoAgent Systems</strong>.</p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '400px', overflowY: 'auto', paddingRight: '8px' }}>
+                {isAnalyzing ? (
+                  <div style={{ textAlign: 'center', padding: '40px' }}>
+                    <Loader className="animate-spin" size={32} style={{ color: 'var(--color-primary)', margin: '0 auto 16px' }} />
+                    <p style={{ color: 'var(--color-muted)' }}>Scanning blockchain for holders...</p>
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '8px' }}>
+                      <div className="glass" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center' }}>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>Total Holders</p>
+                        <h4 style={{ fontSize: '1.1rem' }}>{distribution.length} Adresses</h4>
+                      </div>
+                      <div className="glass" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center' }}>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>Supply Minted</p>
+                        <h4 style={{ fontSize: '1.1rem' }}>{totalMints?.toString()} F-NFTs</h4>
+                      </div>
+                    </div>
+                    
+                    {distribution.map((holder, idx) => (
+                      <div key={idx} style={{ 
+                        padding: '16px', 
+                        borderRadius: '16px', 
+                        background: holder.isYou ? 'rgba(44, 194, 149, 0.05)' : 'rgba(255,255,255,0.02)',
+                        border: holder.isYou ? '1px solid rgba(44, 194, 149, 0.2)' : '1px solid rgba(255,255,255,0.05)',
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center' 
+                      }}>
+                        <div style={{ overflow: 'hidden' }}>
+                          <h4 style={{ fontSize: '0.95rem', marginBottom: '4px', color: holder.isYou ? 'var(--color-secondary)' : 'white' }}>
+                            {holder.isYou ? 'You (Current Wallet)' : `Holder #${idx + 1}`}
+                          </h4>
+                          <code style={{ fontSize: '0.75rem', color: 'var(--color-muted)', wordBreak: 'break-all' }}>
+                            {holder.address.slice(0, 10)}...{holder.address.slice(-8)}
+                          </code>
+                        </div>
+                        <div style={{ textAlign: 'right', minWidth: '80px' }}>
+                          <span style={{ fontSize: '1.1rem', fontWeight: '700', color: holder.isYou ? 'var(--color-secondary)' : 'var(--color-primary)' }}>
+                            {holder.percent}%
+                          </span>
+                          <p style={{ fontSize: '0.7rem', color: 'var(--color-muted)' }}>{holder.count} Tokens</p>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+
+              <button onClick={() => setIsInfoOpen(false)} className="btn btn-outline" style={{ width: '100%', marginTop: '32px' }}>Close</button>
             </motion.div>
           </div>
         )}

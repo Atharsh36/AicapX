@@ -8,7 +8,7 @@ import { bscTestnet, bsc } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const config = getDefaultConfig({
-  appName: 'OmniAI',
+  appName: 'AiCapX',
   projectId: '3fd8b11eb0e1ab1029c299c85faeb2c5', // WalletConnect Project ID placeholder
   chains: [bscTestnet, bsc],
   ssr: true,
@@ -26,10 +26,10 @@ export default function App({ Component, pageProps }) {
           borderRadius: 'large',
         })}>
           <Head>
-            <title>OmniAI | Decentralized AI Investment Platform</title>
+            <title>AiCapX | Decentralized AI Investment Platform</title>
             <meta
               name="description"
-              content="Democratizing AI infrastructure funding through Real-World Asset (RWA) tokenization and DeFi. Invest in the future of artificial intelligence."
+              content="Democratizing AI infrastructure funding through Real-World Asset (RWA) tokenization and DeFi. Invest in the future of artificial intelligence with AiCapX."
             />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link rel="icon" href="/favicon.ico" />

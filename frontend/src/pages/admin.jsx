@@ -255,7 +255,7 @@ export default function Admin() {
   // ═══════════════════════════════════════════════
   return (
     <div className="container" style={{ padding: '120px 24px 80px', minHeight: '100vh', maxWidth: '1150px', margin: '0 auto' }}>
-      <Head><title>Admin Command Center | OmniAI</title></Head>
+      <Head><title>Admin Command Center | AiCapX</title></Head>
 
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '52px' }}>
@@ -264,7 +264,7 @@ export default function Admin() {
           Admin <span className="gradient-text">Command Center</span>
         </h1>
         <p style={{ color: 'var(--color-muted)', fontSize: '1.05rem' }}>
-          Review applications · Mint AiRegistration F-NFTs · Deploy on BNB Chain
+          Review Applications · Verify AI Assets · Mint AutoAgent F-NFTs
         </p>
       </div>
 

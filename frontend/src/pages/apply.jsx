@@ -594,7 +594,7 @@ export default function StartupSubmission() {
               <div className={styles.checkboxGroup}>
                 <input type="checkbox" id="term4" className={styles.checkbox} required />
                 <label htmlFor="term4">
-                  I accept the OmniAI Platform Terms of Service, AML/KYF Compliance clauses, and the 10% Platform Treasury allocation of the minted RWA tokens.
+                  I accept the AiCapX Platform Terms of Service, AML/KYF Compliance clauses, and the 10% Platform Treasury allocation of the minted RWA tokens.
                 </label>
               </div>
             </div>
@@ -609,7 +609,7 @@ export default function StartupSubmission() {
   if (submissionStatus === 'review') {
     return (
       <div className={`container ${styles.pageContainer}`}>
-        <Head><title>Status | OmniAI</title></Head>
+        <Head><title>Status | AiCapX</title></Head>
         <div className={`glass ${styles.formSection}`} style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
           <div className={`${styles.statusIcon} ${styles.review}`}>
             <Clock size={40} />
@@ -638,7 +638,7 @@ export default function StartupSubmission() {
   return (
     <div className={`container ${styles.pageContainer}`}>
       <Head>
-        <title>Startup Project Submission | OmniAI</title>
+        <title>Startup Project Submission | AiCapX</title>
       </Head>
 
       <div className={styles.header}>

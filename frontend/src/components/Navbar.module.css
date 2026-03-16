@@ -31,15 +31,22 @@
   text-decoration: none;
 }
 
-.logoIcon {
-  color: var(--color-primary);
-  filter: drop-shadow(0 0 8px rgba(161, 98, 247, 0.6));
+.logoImg {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
 .logoText {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.03em;
+  color: white;
+}
+
+.logoImg:hover {
+  transform: scale(1.1);
 }
 
 .navLinks {
