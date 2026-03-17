@@ -190,18 +190,22 @@ export default function Home() {
                   <div style={{ padding: '24px', background: '#f8fafc', borderRadius: '24px', border: '1px solid #f1f5f9' }}>
                     <div style={{ marginBottom: '24px' }}>
                       <p style={{ fontSize: '10px', color: '#94a3b8', marginBottom: '4px' }}>Portfolio Balance</p>
-                      <h3 style={{ fontSize: '1.8rem' }}>14.25 <span style={{ fontSize: '1rem', color: '#94a3b8' }}>ETH</span></h3>
+                      <h3 style={{ fontSize: '1.8rem' }}>14.25 <span style={{ fontSize: '1rem', color: '#94a3b8' }}>BNB</span></h3>
                     </div>
                     
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       <p style={{ fontSize: '10px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>Recent Distributions</p>
-                      {[1, 2, 3].map(i => (
+                      {[
+                        { label: 'Weekly Yield', val: '+0.12 BNB' },
+                        { label: 'Inference Fee', val: '+0.05 BNB' },
+                        { label: 'Cluster Bonus', val: '+0.08 BNB' }
+                      ].map((item, i) => (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                             <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary)' }} />
-                            <div style={{ height: '8px', width: '60px', background: '#e2e8f0', borderRadius: '2px' }} />
+                            <span style={{ fontSize: '11px', fontWeight: '500', color: 'var(--color-text)' }}>{item.label}</span>
                           </div>
-                          <div style={{ height: '8px', width: '30px', background: '#f1f5f9', borderRadius: '2px' }} />
+                          <span style={{ fontSize: '11px', fontWeight: '700', color: '#10b981' }}>{item.val}</span>
                         </div>
                       ))}
                     </div>
