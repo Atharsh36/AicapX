@@ -399,6 +399,28 @@ export default function Market() {
 
                   {/* Error message */}
                   <AnimatePresence>
+                    {investAmount && parseFloat(investAmount) < 0.0001 && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        style={{
+                          background: 'rgba(239, 68, 68, 0.1)',
+                          border: '1px solid rgba(239, 68, 68, 0.3)',
+                          borderRadius: '8px',
+                          padding: '10px 14px',
+                          marginBottom: '16px',
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '8px',
+                          color: '#ef4444',
+                          fontSize: '0.85rem',
+                        }}
+                      >
+                        <AlertTriangle size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
+                        <span>Minimum investment requirement: 0.0001 BNB</span>
+                      </motion.div>
+                    )}
                     {txError && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
@@ -450,7 +472,7 @@ export default function Market() {
                     <button
                       id="confirm-invest-btn"
                       className="btn btn-primary"
-                      disabled={!investAmount || parseFloat(investAmount) <= 0 || isProcessing}
+                      disabled={!investAmount || parseFloat(investAmount) < 0.0001 || isProcessing}
                       onClick={handleInvest}
                       style={{ minWidth: '200px', position: 'relative', overflow: 'hidden' }}
                     >

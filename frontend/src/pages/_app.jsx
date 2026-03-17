@@ -2,7 +2,7 @@ import Head from "next/head";
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultConfig, RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
+import { getDefaultConfig, RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { bscTestnet, bsc } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
@@ -20,9 +20,9 @@ export default function App({ Component, pageProps }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={darkTheme({
-          accentColor: '#a162f7',
-          accentColorForeground: 'white',
+        <RainbowKitProvider theme={lightTheme({
+          accentColor: '#fbbf24',
+          accentColorForeground: '#0f172a',
           borderRadius: 'large',
         })}>
           <Head>
@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }) {
               content="Democratizing AI infrastructure funding through Real-World Asset (RWA) tokenization and DeFi. Invest in the future of artificial intelligence with AiCapX."
             />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <link rel="icon" href="/favicon.ico" />
+            <link rel="icon" href="/logo.png" />
           </Head>
           <Navbar />
           <main>

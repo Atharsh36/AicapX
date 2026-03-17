@@ -10,9 +10,9 @@
 }
 
 .header h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 16px;
-  text-shadow: 0 0 40px rgba(161, 98, 247, 0.3);
+  color: #0f172a;
 }
 
 .header p {
@@ -59,14 +59,15 @@
 }
 
 .stepItem:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: #f8fafc;
   color: var(--color-text);
 }
 
 .stepItem.active {
-  background: rgba(161, 98, 247, 0.1);
-  border-color: rgba(161, 98, 247, 0.3);
-  color: var(--color-primary);
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.2);
+  color: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.05);
 }
 
 .stepItem.completed {
@@ -128,21 +129,21 @@
 
 .formControl {
   width: 100%;
-  padding: 14px 16px;
-  background: rgba(10, 11, 16, 0.5);
+  padding: 14px 18px;
+  background: #f8fafc;
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   color: var(--color-text);
   font-family: var(--font-main);
   transition: all var(--transition-fast);
   outline: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .formControl:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 15px rgba(161, 98, 247, 0.15);
-  background: rgba(23, 26, 36, 0.8);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+  background: #ffffff;
 }
 
 textarea.formControl {
@@ -154,9 +155,9 @@ textarea.formControl {
 .uploadArea {
   border: 2px dashed var(--border-glass);
   border-radius: var(--radius-md);
-  padding: 32px;
+  padding: 40px;
   text-align: center;
-  background: rgba(10, 11, 16, 0.3);
+  background: #fdfdfd;
   transition: all var(--transition-fast);
   cursor: pointer;
   margin-top: 8px;
@@ -164,12 +165,12 @@ textarea.formControl {
 
 .uploadArea:hover {
   border-color: var(--color-primary);
-  background: rgba(161, 98, 247, 0.05);
+  background: rgba(251, 191, 36, 0.05);
 }
 
 .uploadIcon {
-  color: var(--color-primary);
-  margin-bottom: 12px;
+  color: var(--color-accent);
+  margin-bottom: 16px;
 }
 
 .uploadArea p {
@@ -245,8 +246,8 @@ textarea.formControl {
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 16px;
-  padding: 16px;
-  background: rgba(10, 11, 16, 0.5);
+  padding: 18px;
+  background: #f8fafc;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-glass);
 }
