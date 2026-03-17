@@ -308,11 +308,14 @@ export default function Portfolio() {
                         <button 
                           key={p}
                           onClick={() => setSelectedPercent(p)}
-                          className={`glass ${selectedPercent === p ? styles.activePercent : ''}`}
+                          className={selectedPercent === p ? styles.activePercent : ''}
                           style={{
-                            padding: '12px 0', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '14px', color: 'white', cursor: 'pointer',
-                            background: selectedPercent === p ? 'var(--color-primary)' : 'rgba(255,255,255,0.03)',
-                            fontWeight: '600', transition: 'all 0.2s'
+                            padding: '12px 0', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '14px', 
+                            color: selectedPercent === p ? 'white' : 'var(--color-text)', 
+                            cursor: 'pointer',
+                            background: selectedPercent === p ? 'var(--color-primary)' : 'white',
+                            fontWeight: '600', transition: 'all 0.2s',
+                            boxShadow: selectedPercent === p ? '0 4px 12px rgba(245, 158, 11, 0.2)' : 'none'
                           }}
                         >
                           {p}%
@@ -325,7 +328,7 @@ export default function Portfolio() {
                     <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--color-muted)', marginBottom: '10px' }}>Recipient Address</label>
                     <input 
                       type="text" placeholder="0x..." 
-                      className="glass" style={{ width: '100%', padding: '16px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                      className="glass" style={{ width: '100%', padding: '16px', borderRadius: '16px', border: '1px solid var(--border-glass)', color: 'var(--color-text)' }}
                       value={recipient} onChange={e => setRecipient(e.target.value)}
                     />
                   </div>
@@ -395,14 +398,14 @@ export default function Portfolio() {
                       <div key={idx} style={{ 
                         padding: '16px', 
                         borderRadius: '16px', 
-                        background: holder.isYou ? 'rgba(44, 194, 149, 0.05)' : 'rgba(255,255,255,0.02)',
-                        border: holder.isYou ? '1px solid rgba(44, 194, 149, 0.2)' : '1px solid rgba(255,255,255,0.05)',
+                        background: holder.isYou ? 'rgba(44, 194, 149, 0.05)' : 'rgba(0,0,0,0.02)',
+                        border: holder.isYou ? '1px solid rgba(44, 194, 149, 0.2)' : '1px solid rgba(0,0,0,0.05)',
                         display: 'flex', 
                         justifyContent: 'space-between', 
                         alignItems: 'center' 
                       }}>
                         <div style={{ overflow: 'hidden' }}>
-                          <h4 style={{ fontSize: '0.95rem', marginBottom: '4px', color: holder.isYou ? 'var(--color-secondary)' : 'white' }}>
+                          <h4 style={{ fontSize: '0.95rem', marginBottom: '4px', color: holder.isYou ? 'var(--color-secondary)' : 'var(--color-text)' }}>
                             {holder.isYou ? 'You (Current Wallet)' : `Holder #${idx + 1}`}
                           </h4>
                           <code style={{ fontSize: '0.75rem', color: 'var(--color-muted)', wordBreak: 'break-all' }}>

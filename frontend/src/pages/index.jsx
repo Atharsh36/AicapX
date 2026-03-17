@@ -39,184 +39,204 @@ export default function Home() {
 
         <div className="container" style={{ paddingTop: '140px' }}>
           {/* --- Hero Section --- */}
-          <section style={{ textAlign: 'center', padding: '40px 0 100px' }}>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+          {/* --- Hero Section --- */}
+          <section style={{ padding: '40px 0 100px' }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '40px', 
+              justifyContent: 'space-between',
+              flexWrap: 'wrap'
+            }}>
+              {/* Left Column: Text Content */}
               <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                style={{ marginBottom: '24px' }}
+                initial={{ opacity: 0, x: -30 }} 
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                style={{ flex: '1 1 400px', maxWidth: '650px' }}
               >
-                <span style={{ 
-                  background: 'rgba(251, 191, 36, 0.08)', 
-                  color: 'var(--color-accent)', 
-                  padding: '10px 24px', 
-                  borderRadius: '100px', 
-                  fontSize: '0.8rem', 
-                  fontWeight: '800',
-                  border: '1px solid rgba(251, 191, 36, 0.2)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em'
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  style={{ marginBottom: '24px' }}
+                >
+                  <span style={{ 
+                    background: 'rgba(251, 191, 36, 0.08)', 
+                    color: 'var(--color-accent)', 
+                    padding: '8px 20px', 
+                    borderRadius: '100px', 
+                    fontSize: '0.75rem', 
+                    fontWeight: '800',
+                    border: '1px solid rgba(251, 191, 36, 0.2)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em'
+                  }}>
+                    <Zap size={13} fill="currentColor" />
+                    The Next trillion-dollar asset class
+                  </span>
+                </motion.div>
+                
+                <h1 style={{ 
+                  fontSize: 'clamp(2rem, 4.5vw, 4rem)', 
+                  fontWeight: '900', 
+                  marginBottom: '24px',
+                  background: 'linear-gradient(to bottom, var(--color-text) 60%, rgba(2, 6, 23, 0.7))',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  textAlign: 'left',
+                  lineHeight: '1.05'
                 }}>
-                  <Zap size={14} fill="currentColor" />
-                  The Next trillion-dollar asset class
-                </span>
+                  The Global Liquidity Layer for <span className="gradient-text">AI Infrastructure</span>
+                </h1>
+                
+                <p style={{ 
+                  fontSize: '1.1rem', 
+                  color: 'var(--color-muted)', 
+                  marginBottom: '40px',
+                  lineHeight: '1.6',
+                  fontWeight: '400',
+                  textAlign: 'left'
+                }}>
+                  AiCapX tokenizes high-performance GPU clusters into high-yield Real World Assets. 
+                  Secure your stake in the global compute network that powers the future of intelligence.
+                </p>
+
+                <div style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', flexWrap: 'wrap' }}>
+                  <Link href="/market">
+                    <button className="btn btn-primary" style={{ padding: '16px 36px', fontSize: '1.05rem', borderRadius: '100px' }}>
+                      Access Marketplace <ArrowRight size={18} style={{ marginLeft: '10px' }} />
+                    </button>
+                  </Link>
+                  <Link href="/startups">
+                    <button className="btn btn-outline" style={{ padding: '16px 36px', fontSize: '1.05rem', borderRadius: '100px' }}>
+                      Launch My Cluster
+                    </button>
+                  </Link>
+                </div>
               </motion.div>
-              
-              <h1 style={{ 
-                fontSize: 'clamp(2.5rem, 8vw, 5.5rem)', 
-                fontWeight: '900', 
-                marginBottom: '28px',
-                maxWidth: '1000px',
-                margin: '0 auto 28px',
-                background: 'linear-gradient(to bottom, var(--color-text) 60%, rgba(2, 6, 23, 0.7))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                The Global Liquidity Layer for <span className="gradient-text">AI Infrastructure</span>
-              </h1>
-              
-              <p style={{ 
-                fontSize: '1.25rem', 
-                color: 'var(--color-muted)', 
-                marginBottom: '48px',
-                maxWidth: '750px',
-                margin: '0 auto 48px',
-                lineHeight: '1.6',
-                fontWeight: '400'
-              }}>
-                AiCapX tokenizes high-performance GPU clusters into high-yield Real World Assets. 
-                Secure your stake in the global compute network that powers the future of intelligence.
-              </p>
 
-              <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link href="/market">
-                  <button className="btn btn-primary" style={{ padding: '18px 44px', fontSize: '1.1rem', borderRadius: '100px' }}>
-                    Access Marketplace <ArrowRight size={18} style={{ marginLeft: '12px' }} />
-                  </button>
-                </Link>
-                <Link href="/startups">
-                  <button className="btn btn-outline" style={{ padding: '18px 44px', fontSize: '1.1rem', borderRadius: '100px' }}>
-                    Launch My Cluster
-                  </button>
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Dashboard Preview Mockup */}
-            <motion.div 
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="glass"
-              style={{ 
-                maxWidth: '1100px', 
-                margin: '80px auto 0', 
-                height: '500px', 
-                overflow: 'hidden',
-                borderRadius: '32px 32px 0 0',
-                borderBottom: 'none',
-                background: 'white',
-                boxShadow: '0 -20px 80px rgba(0,0,0,0.06)',
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
-              {/* Browser Header */}
-              <div style={{ padding: '16px 24px', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '20px', background: '#f8fafc' }}>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f57' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
-                </div>
-                <div style={{ height: '28px', flex: 1, background: 'white', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', padding: '0 12px', fontSize: '10px', color: '#94a3b8' }}>
-                  https://app.aicapx.io/market/gpu-h100-cluster-delta
-                </div>
-              </div>
-
-              {/* Sidebar + Main Content Mockup */}
-              <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-                {/* Mini Sidebar */}
-                <div style={{ width: '64px', borderRight: '1px solid #f1f5f9', display: 'flex', flexDirection: 'column', padding: '20px 0', gap: '24px', alignItems: 'center', color: '#94a3b8' }}>
-                  <LayoutGrid size={20} />
-                  <BarChart3 size={20} style={{ color: 'var(--color-primary)' }} />
-                  <Settings size={20} />
-                  <PieChart size={20} />
+              {/* Right Column: Dashboard Preview Mockup */}
+              <motion.div 
+                initial={{ opacity: 0, x: 40, rotateY: -15, rotateX: 6, scale: 0.95 }}
+                whileInView={{ opacity: 1, x: 0, rotateY: -8, rotateX: 3, scale: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                whileHover={{ rotateY: 0, rotateX: 0, scale: 1.05, transition: { duration: 0.4 } }}
+                transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="glass"
+                style={{ 
+                  flex: '1 1 400px',
+                  minWidth: '400px',
+                  height: '480px', 
+                  overflow: 'hidden',
+                  borderRadius: '24px',
+                  background: 'white',
+                  boxShadow: '0 40px 100px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.03)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  perspective: '1200px',
+                  transformStyle: 'preserve-3d',
+                  margin: '20px 0'
+                }}
+              >
+                {/* Browser Header */}
+                <div style={{ padding: '14px 24px', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', gap: '20px', background: '#f8fafc' }}>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f57' }} />
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
+                  </div>
+                  <div style={{ height: '24px', flex: 1, background: 'white', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', padding: '0 12px', fontSize: '9px', color: '#94a3b8' }}>
+                    https://app.aicapx.io/market/gpu-h100-cluster-delta
+                  </div>
                 </div>
 
-                {/* Main Mockup Area */}
-                <div style={{ flex: 1, padding: '32px', display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: '32px' }}>
-                  {/* Left Column: Chart and List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    {/* Fake Chart */}
-                    <div style={{ padding: '24px', border: '1px solid #f1f5f9', borderRadius: '20px', height: '180px', background: 'linear-gradient(to bottom right, #ffffff, #fafafa)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                        <div>
-                          <p style={{ fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Yield Performance</p>
-                          <h4 style={{ fontSize: '1.2rem' }}>$1,420.65 <span style={{ color: '#10b981', fontSize: '10px', fontWeight: '700' }}>+12.4%</span></h4>
+                {/* Sidebar + Main Content Mockup */}
+                <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+                  {/* Mini Sidebar */}
+                  <div style={{ width: '60px', borderRight: '1px solid #f1f5f9', display: 'flex', flexDirection: 'column', padding: '20px 0', gap: '20px', alignItems: 'center', color: '#94a3b8' }}>
+                    <LayoutGrid size={18} />
+                    <BarChart3 size={18} style={{ color: 'var(--color-primary)' }} />
+                    <Settings size={18} />
+                    <PieChart size={18} />
+                  </div>
+
+                  {/* Main Mockup Area */}
+                  <div style={{ flex: 1, padding: '24px', display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '20px' }}>
+                    {/* Left Column: Chart and List */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                      {/* Fake Chart */}
+                      <div style={{ padding: '20px', border: '1px solid #f1f5f9', borderRadius: '16px', height: '140px', background: 'linear-gradient(to bottom right, #ffffff, #fafafa)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                          <div>
+                            <p style={{ fontSize: '9px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Yield Performance</p>
+                            <h4 style={{ fontSize: '1rem' }}>$1,420.65 <span style={{ color: '#10b981', fontSize: '9px', fontWeight: '700' }}>+12.4%</span></h4>
+                          </div>
+                          <div style={{ display: 'flex', gap: '3px' }}>
+                            {[1,2,3,4,5].map(i => <div key={i} style={{ width: '14px', height: '6px', background: i === 3 ? 'var(--color-primary)' : '#f1f5f9', borderRadius: '2px' }} />)}
+                          </div>
                         </div>
-                        <div style={{ display: 'flex', gap: '4px' }}>
-                          {[1,2,3,4,5].map(i => <div key={i} style={{ width: '20px', height: '8px', background: i === 3 ? 'var(--color-primary)' : '#f1f5f9', borderRadius: '2px' }} />)}
+                        <div style={{ display: 'flex', alignItems: 'flex-end', height: '40px', gap: '4px' }}>
+                          {[40, 60, 45, 70, 55, 80, 95, 75, 85, 90, 100, 80, 70, 85, 90].map((h, i) => (
+                            <div key={i} style={{ flex: 1, height: `${h}%`, background: 'var(--color-primary)', opacity: 0.1 + (i * 0.05), borderRadius: '1px 1px 0 0' }} />
+                          ))}
                         </div>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'flex-end', height: '60px', gap: '6px' }}>
-                        {[40, 60, 45, 70, 55, 80, 95, 75, 85, 90, 100, 80, 70, 85, 90].map((h, i) => (
-                          <div key={i} style={{ flex: 1, height: `${h}%`, background: 'var(--color-primary)', opacity: 0.1 + (i * 0.05), borderRadius: '2px 2px 0 0' }} />
+
+                      {/* Cluster List */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        {[
+                          { name: 'NVIDIA H100 Cluster Alpha', status: 'Active' },
+                          { name: 'A100 Enterprise Node', status: 'Locked' }
+                        ].map((item, i) => (
+                          <div key={i} style={{ padding: '12px', border: '1px solid #f1f5f9', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                              <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Cpu size={12} /></div>
+                              <span style={{ fontSize: '10px', fontWeight: '600' }}>{item.name}</span>
+                            </div>
+                            <span style={{ fontSize: '8px', color: '#10b981', padding: '3px 6px', background: '#ecfdf5', borderRadius: '100px', fontWeight: '700' }}>{item.status}</span>
+                          </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Cluster List */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                      {[
-                        { name: 'NVIDIA H100 Cluster Alpha', status: 'Active', load: '88%' },
-                        { name: 'A100 Enterprise Node', status: 'Locked', load: '92%' }
-                      ].map((item, i) => (
-                        <div key={i} style={{ padding: '16px', border: '1px solid #f1f5f9', borderRadius: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                            <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Cpu size={14} /></div>
-                            <span style={{ fontSize: '12px', fontWeight: '600' }}>{item.name}</span>
+                    {/* Right Column: Portfolio */}
+                    <div style={{ padding: '24px', background: '#f8fafc', borderRadius: '20px', border: '1px solid #f1f5f9' }}>
+                      <div style={{ marginBottom: '16px' }}>
+                        <p style={{ fontSize: '9px', color: '#94a3b8', marginBottom: '2px' }}>Portfolio Balance</p>
+                        <h3 style={{ fontSize: '1.4rem' }}>14.25 <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>BNB</span></h3>
+                      </div>
+                      
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <p style={{ fontSize: '9px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>Recent Distributions</p>
+                        {[
+                          { label: 'Yield', val: '+0.12' },
+                          { label: 'Fee', val: '+0.05' },
+                          { label: 'Bonus', val: '+0.08' }
+                        ].map((item, i) => (
+                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                              <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--color-primary)' }} />
+                              <span style={{ fontSize: '9px', fontWeight: '500', color: 'var(--color-text)' }}>{item.label}</span>
+                            </div>
+                            <span style={{ fontSize: '9px', fontWeight: '700', color: '#10b981' }}>{item.val}</span>
                           </div>
-                          <span style={{ fontSize: '10px', color: '#10b981', padding: '4px 8px', background: '#ecfdf5', borderRadius: '100px', fontWeight: '700' }}>{item.status}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                        ))}
+                      </div>
 
-                  {/* Right Column: Portfolio */}
-                  <div style={{ padding: '24px', background: '#f8fafc', borderRadius: '24px', border: '1px solid #f1f5f9' }}>
-                    <div style={{ marginBottom: '24px' }}>
-                      <p style={{ fontSize: '10px', color: '#94a3b8', marginBottom: '4px' }}>Portfolio Balance</p>
-                      <h3 style={{ fontSize: '1.8rem' }}>14.25 <span style={{ fontSize: '1rem', color: '#94a3b8' }}>BNB</span></h3>
+                      <button style={{ width: '100%', marginTop: '20px', padding: '10px', background: 'var(--color-text)', color: 'white', border: 'none', borderRadius: '10px', fontSize: '10px', fontWeight: '600' }}>
+                        Withdraw
+                      </button>
                     </div>
-                    
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                      <p style={{ fontSize: '10px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase' }}>Recent Distributions</p>
-                      {[
-                        { label: 'Weekly Yield', val: '+0.12 BNB' },
-                        { label: 'Inference Fee', val: '+0.05 BNB' },
-                        { label: 'Cluster Bonus', val: '+0.08 BNB' }
-                      ].map((item, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-primary)' }} />
-                            <span style={{ fontSize: '11px', fontWeight: '500', color: 'var(--color-text)' }}>{item.label}</span>
-                          </div>
-                          <span style={{ fontSize: '11px', fontWeight: '700', color: '#10b981' }}>{item.val}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <button style={{ width: '100%', marginTop: '32px', padding: '12px', background: 'var(--color-text)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '12px', fontWeight: '600' }}>
-                      Withdraw Rewards
-                    </button>
                   </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </section>
 
           {/* --- Stats Cards --- */}

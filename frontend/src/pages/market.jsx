@@ -300,10 +300,10 @@ export default function Market() {
                   </motion.div>
                   <h3 style={{ marginBottom: '12px' }}>Investment Successful! 🎉</h3>
                   <p style={{ color: 'var(--color-muted)', marginBottom: '8px' }}>
-                    <strong style={{ color: 'white' }}>{estimatedTokens.toLocaleString()} F-NFT tokens</strong> have been minted to your wallet.
+                    <strong style={{ color: 'var(--color-text)' }}>{estimatedTokens.toLocaleString()} F-NFT tokens</strong> have been minted to your wallet.
                   </p>
                   <p style={{ color: 'var(--color-muted)', marginBottom: '24px' }}>
-                    You have successfully funded <strong style={{ color: 'white' }}>{selectedProject.name}</strong>. Check your Investor Dashboard to see your new AI assets.
+                    You have successfully funded <strong style={{ color: 'var(--color-text)' }}>{selectedProject.name}</strong>. Check your Investor Dashboard to see your new AI assets.
                   </p>
                   {hash && (
                     <a
@@ -343,7 +343,7 @@ export default function Market() {
                   </div>
                   <h3 style={{ marginBottom: '12px' }}>Wrong Network</h3>
                   <p style={{ color: 'var(--color-muted)', marginBottom: '24px' }}>
-                    This contract is deployed on <strong style={{ color: 'white' }}>BSC Testnet</strong>. Please switch your network to continue.
+                    This contract is deployed on <strong style={{ color: 'var(--color-text)' }}>BSC Testnet</strong>. Please switch your network to continue.
                   </p>
                   <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => switchChain({ chainId: BSC_TESTNET_CHAIN_ID })}>
                     Switch to BSC Testnet
