@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet, TrendingUp, Activity, ShieldAlert, Cpu, Send, Loader, CheckCircle, ExternalLink, RefreshCw, Info, Users, PieChart } from 'lucide-react';
 import styles from '../styles/Portfolio.module.css';
-import { useAccount, useBalance, useReadContract, useWriteContract, useWaitForTransactionReceipt, usePublicClient } from 'wagmi';
+import { useAccount, useBalance, useReadContract, useWriteContract, useWaitForTransactionReceipt, usePublicClient, useWatchContractEvent } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 // ─── CONTRACT CONFIG ──────────────────────────────────────────────────────────
@@ -14,7 +14,11 @@ const AAS_ABI = [
   { name: "_tokenIdCounter", type: "function", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { name: "safeTransferFrom", type: "function", stateMutability: "nonpayable", inputs: [{ name: "from", type: "address" }, { name: "to", type: "address" }, { name: "tokenId", type: "uint256" }], outputs: [] },
   { name: "multiTransfer", type: "function", stateMutability: "nonpayable", inputs: [{ name: "to", type: "address" }, { name: "tokenIds", type: "uint256[]" }], outputs: [] },
+  { name: "Transfer", type: "event", inputs: [{ name: "from", type: "address", indexed: true }, { name: "to", type: "address", indexed: true }, { name: "tokenId", type: "uint256", indexed: true }] },
 ];
+
+// Helper: split an array into chunks of N
+const chunkArray = (arr, size) => Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
 
 export default function Portfolio() {
   const [mounted, setMounted] = useState(false);
@@ -23,15 +27,15 @@ export default function Portfolio() {
   const { isConnected, address } = useAccount();
   const { data: bnbBalance, refetch: refetchBnb } = useBalance({ address });
 
-  // ── Blockchain Data ──
+  // ── Blockchain Data (polled every 6s for live updates) ──
   const { data: nftBalance, refetch: refetchNft } = useReadContract({
     address: AAS_ADDRESS, abi: AAS_ABI, functionName: 'balanceOf', args: [address],
-    query: { enabled: !!address }
+    query: { enabled: !!address, refetchInterval: 6000 }
   });
 
-  const { data: totalMints } = useReadContract({
+  const { data: totalMints, refetch: refetchTotalMints } = useReadContract({
     address: AAS_ADDRESS, abi: AAS_ABI, functionName: '_tokenIdCounter',
-    query: { enabled: true }
+    query: { enabled: true, refetchInterval: 6000 }
   });
 
   // ── Owned Token Discovery ──
@@ -50,53 +54,77 @@ export default function Portfolio() {
   const { isLoading: isMining, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash: txHash });
 
   const scanTokens = async () => {
-    if (!address || !nftBalance || nftBalance === 0n || !totalMints) {
+    if (!address || !nftBalance || nftBalance === 0n || !totalMints || !publicClient) {
       setOwnedTokens([]);
       return;
     }
     setIsScanning(true);
-    const tokens = [];
-    const total = Number(totalMints);
-    const balance = Number(nftBalance);
-    
-    // In a real production app, we would use an Indexer (Graph/Moralis).
-    // For this demo, we scan the most recent 100 tokens to find owner matches.
-    for (let i = total; i > 0 && tokens.length < balance && tokens.length < 100; i--) {
-      tokens.push({ id: i, name: `AutoAgent NFT #${i}` });
+    try {
+      const total = Number(totalMints);
+      const balance = Number(nftBalance);
+
+      // Build calls for ALL tokens from newest → oldest (token IDs: total, total-1, ... 1)
+      const tokenIds = Array.from({ length: total }, (_, i) => total - i); // [total, total-1, ..., 1]
+      const allCalls = tokenIds.map(id => ({
+        address: AAS_ADDRESS,
+        abi: AAS_ABI,
+        functionName: 'ownerOf',
+        args: [BigInt(id)],
+      }));
+
+      // Chunk into batches of 500 to avoid RPC limits
+      const chunks = chunkArray(allCalls, 500);
+      const owned = [];
+      let offset = 0; // track position across chunks
+
+      for (const chunk of chunks) {
+        const results = await publicClient.multicall({ contracts: chunk });
+        results.forEach((res, idx) => {
+          const actualTokenId = tokenIds[offset + idx];
+          if (res.status === 'success' && res.result?.toLowerCase() === address.toLowerCase()) {
+            owned.push({ id: actualTokenId, name: `AutoAgent NFT #${actualTokenId}` });
+          }
+        });
+        offset += chunk.length;
+        // Early exit if we've found all owned tokens
+        if (owned.length >= balance) break;
+      }
+
+      setOwnedTokens(owned);
+    } catch (err) {
+      console.error('Token scan error:', err);
+      setOwnedTokens([]);
+    } finally {
+      setIsScanning(false);
     }
-    setOwnedTokens(tokens);
-    setIsScanning(false);
   };
 
   const analyzeHolders = async () => {
-    if (!totalMints || totalMints === 0n) return;
+    if (!totalMints || totalMints === 0n || !publicClient) return;
     setIsAnalyzing(true);
     try {
       const total = Number(totalMints);
       const holderCounts = {};
-      const calls = [];
-      
-      // We scan all tokens up to 200 (for demo performance)
-      const scanLimit = Math.min(total, 200);
-      
-      for (let i = 1; i <= scanLimit; i++) {
-        calls.push({
-          address: AAS_ADDRESS,
-          abi: AAS_ABI,
-          functionName: 'ownerOf',
-          args: [BigInt(i)],
+
+      // Build calls for ALL tokens
+      const allCalls = Array.from({ length: total }, (_, i) => ({
+        address: AAS_ADDRESS,
+        abi: AAS_ABI,
+        functionName: 'ownerOf',
+        args: [BigInt(i + 1)],
+      }));
+
+      // Chunk into 500-call batches
+      const chunks = chunkArray(allCalls, 500);
+      for (const chunk of chunks) {
+        const results = await publicClient.multicall({ contracts: chunk });
+        results.forEach((res) => {
+          if (res.status === 'success') {
+            const owner = res.result;
+            holderCounts[owner] = (holderCounts[owner] || 0) + 1;
+          }
         });
       }
-
-      // Execute multicall for high performance
-      const results = await publicClient.multicall({ contracts: calls });
-      
-      results.forEach((res) => {
-        if (res.status === 'success') {
-          const owner = res.result;
-          holderCounts[owner] = (holderCounts[owner] || 0) + 1;
-        }
-      });
 
       const dist = Object.entries(holderCounts).map(([addr, count]) => ({
         address: addr,
@@ -115,6 +143,28 @@ export default function Portfolio() {
 
   useEffect(() => { scanTokens(); }, [address, nftBalance, totalMints]);
   useEffect(() => { if (isInfoOpen) analyzeHolders(); }, [isInfoOpen, totalMints]);
+
+  // ── Real-time: Watch all Transfer events and auto-refresh if connected wallet is involved ──
+  useWatchContractEvent({
+    address: AAS_ADDRESS,
+    abi: AAS_ABI,
+    eventName: 'Transfer',
+    onLogs(logs) {
+      const myAddr = address?.toLowerCase();
+      const relevant = logs.some(
+        log => log.args?.from?.toLowerCase() === myAddr || log.args?.to?.toLowerCase() === myAddr
+      );
+      // Always update total supply counter
+      refetchTotalMints();
+      if (relevant) {
+        refetchNft();
+        refetchBnb();
+        // scanTokens will re-run automatically via the useEffect above when nftBalance changes
+      }
+    },
+    enabled: !!address,
+  });
+
 
   const handleTransfer = () => {
     if (!recipient.startsWith('0x') || recipient.length !== 42) return alert('Please enter a valid BSC address.');
@@ -345,7 +395,7 @@ export default function Portfolio() {
 
                   {txError && (
                     <div style={{ marginTop: '20px', padding: '12px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '12px', color: '#ef4444', fontSize: '0.8rem' }}>
-                      <strong>Note:</strong> Batch transfer requires contract upgrade. Please fund your deployer wallet.
+                      <strong>Error:</strong> {txError.shortMessage || txError.message || 'Transaction failed on-chain.'}
                     </div>
                   )}
                 </>
