@@ -17,6 +17,7 @@ import {
   ChevronLeft,
   Clock
 } from 'lucide-react';
+import { submitApplication } from '../lib/api';
 import styles from '../styles/StartupSubmission.module.css';
 
 const steps = [
@@ -64,26 +65,22 @@ export default function StartupSubmission() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:8000/api/applications', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.projectName,
-          startupName: formData.companyName,
-          category: formData.category,
-          desc: formData.desc,
-          goal: formData.goal,
-          tokenSupply: formData.tokenSupply,
-          apy: formData.apy,
-          founderName: formData.founderName,
-          startupWallet: formData.startupWallet,
-          demoVideo: formData.demoVideo,
-          revenueProof: formData.revenueProof,
-          userCount: formData.userCount,
-          documents: formData.documents
-        })
+      const data = await submitApplication({
+        name: formData.projectName,
+        startupName: formData.companyName,
+        category: formData.category,
+        desc: formData.desc,
+        goal: formData.goal,
+        tokenSupply: formData.tokenSupply,
+        apy: formData.apy,
+        founderName: formData.founderName,
+        startupWallet: formData.startupWallet,
+        demoVideo: formData.demoVideo,
+        revenueProof: formData.revenueProof,
+        userCount: formData.userCount,
+        documents: formData.documents
       });
-      if (res.ok) {
+      if (data) {
          setSubmissionStatus('review');
       }
     } catch (err) {

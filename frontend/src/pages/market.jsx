@@ -5,6 +5,7 @@ import { Database, Cpu, Image as ImageIcon, Briefcase, Activity, X, CheckCircle,
 import { useWriteContract, useWaitForTransactionReceipt, useAccount, useChainId, useSwitchChain } from 'wagmi';
 import { parseEther } from 'viem';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { getApplications } from '../lib/api';
 import styles from '../styles/Market.module.css';
 
 // ─── CONTRACT CONFIG ────────────────────────────────────────────────────────
@@ -59,8 +60,7 @@ export default function Market() {
   useEffect(() => {
     const fetchApproved = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/applications?status=Active');
-        const data = await res.json();
+        const data = await getApplications('Active');
         const getIcon = (cat) => {
           if (cat.includes('Vision')) return <ImageIcon size={24} />;
           if (cat.includes('Health')) return <Activity size={24} />;

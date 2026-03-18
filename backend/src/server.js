@@ -3,7 +3,11 @@ const cors    = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ["https://aicapx-frontend.vercel.app", "http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,7 +44,11 @@ let nextId = 2;
 
 // ─── Health ──────────────────────────────────────────────────────────────────
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    message: 'Backend is running',
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // ─── GET /api/applications ──────────────────────────────────────────────────
