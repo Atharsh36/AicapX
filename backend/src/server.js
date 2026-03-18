@@ -3,11 +3,36 @@ const cors    = require('cors');
 require('dotenv').config();
 
 const app = express();
+const ALLOWED_ORIGINS = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+];
+
 app.use(cors({
-  origin: ["https://aicapx-frontend.vercel.app", "http://localhost:3000"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g. curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+
+    // Allow any Vercel preview/production deployment for this project
+    if (/^https:\/\/aicapx[a-z0-9\-]*\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+
+    // Allow explicit localhost origins
+    if (ALLOWED_ORIGINS.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.warn(`[CORS] Blocked origin: ${origin}`);
+    callback(new Error(`CORS policy: Origin ${origin} not allowed`));
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

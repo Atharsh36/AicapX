@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useEffect } from "react";
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
 import '@rainbow-me/rainbowkit/styles.css';
@@ -6,6 +7,7 @@ import { getDefaultConfig, RainbowKitProvider, lightTheme } from '@rainbow-me/ra
 import { WagmiProvider } from 'wagmi';
 import { bscTestnet, bsc } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { wakeUpServer } from "../lib/api";
 
 const config = getDefaultConfig({
   appName: 'AiCapX',
@@ -17,6 +19,11 @@ const config = getDefaultConfig({
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
+  // Pre-warm the Render backend on first load so it's ready when needed
+  useEffect(() => {
+    wakeUpServer();
+  }, []);
+
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

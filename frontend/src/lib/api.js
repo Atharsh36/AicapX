@@ -1,8 +1,18 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-console.log("API URL:", API_URL);
+if (!API_URL) {
+  console.error("⚠️  NEXT_PUBLIC_API_URL is not set! Check your .env.local or vercel.json.");
+}
 
-// Helper function for API requests with error handling and retry logic
+// Fetch with an explicit timeout (ms)
+const fetchWithTimeout = (url, options = {}, timeoutMs = 60000) => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(timer));
+};
+
+// Helper function for API requests with error handling and Render cold-start retry
 const apiRequest = async (endpoint, options = {}) => {
   const url = `${API_URL}${endpoint}`;
   const config = {
@@ -14,30 +24,44 @@ const apiRequest = async (endpoint, options = {}) => {
   };
 
   try {
-    const response = await fetch(url, config);
-    
+    const response = await fetchWithTimeout(url, config, 60000);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
     return await response.json();
   } catch (error) {
-    // Handle Render backend sleep with retry
-    if (error.message.includes('fetch') || error.message.includes('network')) {
-      console.log("Waking up server...");
-      // Retry once after 3 seconds for cold start
-      await new Promise(resolve => setTimeout(resolve, 3000));
+    // Render free-tier cold start can take 30-50 seconds — wait and retry once
+    const isColdStart =
+      error.name === 'AbortError' ||
+      error.message.toLowerCase().includes('fetch') ||
+      error.message.toLowerCase().includes('network') ||
+      error.message.toLowerCase().includes('failed to fetch');
+
+    if (isColdStart) {
+      console.log("⏳ Server is waking up (Render cold start). Retrying in 35s...");
+      await new Promise(resolve => setTimeout(resolve, 35000));
       try {
-        const retryResponse = await fetch(url, config);
+        const retryResponse = await fetchWithTimeout(url, config, 60000);
         if (!retryResponse.ok) {
           throw new Error(`HTTP error! status: ${retryResponse.status}`);
         }
         return await retryResponse.json();
       } catch (retryError) {
-        throw new Error(`Server unavailable: ${retryError.message}`);
+        throw new Error(`Server unavailable after retry: ${retryError.message}`);
       }
     }
     throw error;
+  }
+};
+
+// Pre-warm the Render server silently (call this on page mount)
+export const wakeUpServer = async () => {
+  try {
+    await fetchWithTimeout(`${API_URL}/health`, {}, 60000);
+    console.log("✅ Backend is awake.");
+  } catch {
+    // Silently ignore — server is probably starting up
+    console.log("⏳ Backend waking up in background...");
   }
 };
 
